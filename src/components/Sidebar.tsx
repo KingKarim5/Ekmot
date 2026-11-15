@@ -31,8 +31,9 @@ export default function Sidebar({ role }: SidebarProps) {
       case "tenant":
         return [
           { href: "/dashboard/tenant", label: "My Property", icon: "🏠" },
-          { href: "/dashboard/tenant/properties", label: "Find Properties", icon: "🔍" },
-          { href: "/dashboard/tenant/pay", label: "Pay Rent", icon: "💳" },
+          { href: "/dashboard/tenant/agreements", label: "Agreements", icon: "🤝" },
+          { href: "/dashboard/tenant/receipts", label: "Rent Receipts (SMS)", icon: "🧾" },
+          { href: "/dashboard/tenant/share", label: "Share My Record", icon: "🔗" },
           { href: "/dashboard/tenant/payments", label: "Payment History", icon: "📋" },
           { href: "/dashboard/tenant/maintenance", label: "Maintenance", icon: "🔧" },
           { href: "/dashboard/tenant/notices", label: "Notices", icon: "📢" },
@@ -42,7 +43,9 @@ export default function Sidebar({ role }: SidebarProps) {
         return [
           { href: "/dashboard/landlord", label: "Properties", icon: "🏘️" },
           { href: "/dashboard/landlord/properties/add", label: "Add Property", icon: "➕" },
+          { href: "/dashboard/landlord/agreements", label: "Agreements", icon: "🤝" },
           { href: "/dashboard/landlord/rentals", label: "Rentals", icon: "📋" },
+          { href: "/dashboard/landlord/receipts", label: "Rent Receipts (SMS)", icon: "🧾" },
           { href: "/dashboard/landlord/renewals", label: "Renewal Requests", icon: "🔄" },
           { href: "/dashboard/landlord/payments", label: "Payments", icon: "💰" },
           { href: "/dashboard/landlord/maintenance", label: "Maintenance", icon: "🔧" },
@@ -52,8 +55,8 @@ export default function Sidebar({ role }: SidebarProps) {
         ];
       case "bank":
         return [
-          { href: "/dashboard/bank", label: "Rental History", icon: "📊" },
-          { href: "/dashboard/bank/credit", label: "Credit Scores", icon: "⭐" },
+          { href: "/dashboard/bank", label: "Rent Records", icon: "📊" },
+          { href: "/dashboard/bank/credit", label: "How Rent Records Work", icon: "ℹ️" },
         ];
       case "ministry":
         return [

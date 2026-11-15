@@ -6,7 +6,9 @@
     "month": "2025-01",
     "status": "paid",
     "timestamp": 1704067200000,
-    "method": "bank_transfer"
+    "method": "bkash",
+    "trxId": "4CAB002CBB",
+    "evidence": "matched"
   },
   {
     "id": "pay2",
@@ -15,7 +17,9 @@
     "month": "2025-02",
     "status": "paid",
     "timestamp": 1706745600000,
-    "method": "mobile_banking"
+    "method": "bkash",
+    "trxId": "95067CD76F",
+    "evidence": "matched"
   },
   {
     "id": "pay3",
@@ -24,7 +28,9 @@
     "month": "2025-03",
     "status": "paid",
     "timestamp": 1709251200000,
-    "method": "online_payment"
+    "method": "bkash",
+    "trxId": "1599B07465",
+    "evidence": "matched"
   },
   {
     "id": "pay4",
@@ -33,7 +39,9 @@
     "month": "2025-04",
     "status": "paid",
     "timestamp": 1711929600000,
-    "method": "bank_transfer"
+    "method": "bkash",
+    "trxId": "5849459009",
+    "evidence": "matched"
   },
   {
     "id": "pay5",
@@ -42,7 +50,9 @@
     "month": "2025-05",
     "status": "paid",
     "timestamp": 1714521600000,
-    "method": "mobile_banking"
+    "method": "bkash",
+    "trxId": "C2D0029B9F",
+    "evidence": "matched"
   },
   {
     "id": "pay6",
@@ -51,7 +61,9 @@
     "month": "2025-06",
     "status": "paid",
     "timestamp": 1717200000000,
-    "method": "online_payment"
+    "method": "bkash",
+    "trxId": "A645970FF3",
+    "evidence": "matched"
   },
   {
     "id": "pay7",
@@ -60,7 +72,9 @@
     "month": "2025-07",
     "status": "paid",
     "timestamp": 1719792000000,
-    "method": "bank_transfer"
+    "method": "bkash",
+    "trxId": "F9DBEEC27A",
+    "evidence": "matched"
   },
   {
     "id": "pay8",
@@ -69,7 +83,9 @@
     "month": "2025-08",
     "status": "paid",
     "timestamp": 1722470400000,
-    "method": "mobile_banking"
+    "method": "bkash",
+    "trxId": "D838B4E226",
+    "evidence": "matched"
   },
   {
     "id": "pay9",
@@ -78,7 +94,9 @@
     "month": "2025-09",
     "status": "paid",
     "timestamp": 1725148800000,
-    "method": "online_payment"
+    "method": "bkash",
+    "trxId": "F0CBE22E17",
+    "evidence": "matched"
   },
   {
     "id": "pay10",
@@ -87,7 +105,9 @@
     "month": "2025-10",
     "status": "paid",
     "timestamp": 1727740800000,
-    "method": "bank_transfer"
+    "method": "bkash",
+    "trxId": "0BD05B2C30",
+    "evidence": "matched"
   },
   {
     "id": "pay11",
@@ -96,7 +116,9 @@
     "month": "2025-11",
     "status": "paid",
     "timestamp": 1730419200000,
-    "method": "mobile_banking"
+    "method": "bkash",
+    "trxId": "15CA7EF2B2",
+    "evidence": "matched"
   },
   {
     "id": "pay12",

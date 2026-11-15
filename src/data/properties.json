@@ -185,5 +185,27 @@
     "startDate": "2025-01-01",
     "endDate": "2026-12-31",
     "createdAt": "2025-03-10T00:00:00Z"
+  },
+  {
+    "id": "pek1",
+    "ownerId": "u2",
+    "address": "House 12, Road 3, Section 10, Mirpur, Dhaka-1216",
+    "rent": 20000,
+    "available": true,
+    "description": "2 bed, 2 bath, balcony",
+    "cityCorp": "DNCC",
+    "ward": 2,
+    "createdAt": "2026-11-01T00:00:00Z"
+  },
+  {
+    "id": "pek2",
+    "ownerId": "u2",
+    "address": "House 7, Road 9/A, Dhanmondi, Dhaka-1209",
+    "rent": 28000,
+    "available": true,
+    "description": "3 bed, 2 bath, lift",
+    "cityCorp": "DSCC",
+    "ward": 15,
+    "createdAt": "2026-11-01T00:00:00Z"
   }
 ]

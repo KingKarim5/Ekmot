@@ -1,7 +1,7 @@
 Test accounts
 The system includes pre-configured test users:
-Tenant: rahim@gmail.com
-Landlord: karim@gmail.com
+Tenant: rahim@test.ekmot
+Landlord: karim@test.ekmot
 Bank: bank@example.com
 Ministry: ministry@example.com
 Note: In development mode, OTP codes are logged to the browser console for easy testing.

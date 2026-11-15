@@ -62,6 +62,8 @@ export interface Property {
   startDate?: string; // Available start date (ISO format: YYYY-MM-DD)
   endDate?: string; // Available end date (ISO format: YYYY-MM-DD) - minimum 2 months from startDate
   createdAt?: string; // Timestamp when property was added
+  cityCorp?: CityCorp; // Ekmot: DNCC or DSCC, decides which city rules load
+  ward?: number; // Ekmot: ward number inside the city corporation
 }
 
 /**
@@ -78,6 +80,13 @@ export interface Rental {
   status: RentalStatus; // Current status of the rental agreement
   monthlyRent: number; // Monthly rent amount (copied from property at creation)
   createdAt?: string; // Timestamp when rental was created
+  // Ekmot fields (all optional so T-ODRE records still load)
+  agreementId?: string; // the confirmed Ekmot agreement behind this rental
+  cityCorp?: CityCorp;
+  ward?: number;
+  advanceMonths?: number;
+  noticeMonths?: number;
+  confirmed?: Confirmation;
 }
 
 /**
@@ -92,6 +101,13 @@ export interface Payment {
   status: PaymentStatus; // Current status of the payment
   timestamp: number; // Unix timestamp when payment was made/initiated
   method?: string; // Optional payment method (e.g., "bank_transfer", "mobile_banking")
+  // Ekmot evidence fields
+  trxId?: string; // transaction ID both SMS must share
+  tenantSms?: string;
+  landlordSms?: string;
+  tenantTrxId?: string;
+  landlordTrxId?: string;
+  evidence?: EvidenceLevel;
 }
 
 /**
@@ -312,3 +328,90 @@ export interface RentalRenewal {
   updatedAt: number; // Unix timestamp when request was last updated
 }
 
+
+
+/* ------------------------------------------------------------------ */
+/* Ekmot additions                                                     */
+/* ------------------------------------------------------------------ */
+
+export type CityCorp = "DNCC" | "DSCC";
+
+/** How much proof stands behind a record: both sides' SMS match, one side only, or they disagree */
+export type EvidenceLevel = "matched" | "one-sided" | "disputed";
+
+export interface Confirmation {
+  tenant: boolean;
+  landlord: boolean;
+  tenantAt?: number;
+  landlordAt?: number;
+}
+
+/** Structured tenancy terms, extracted from Bangla/Banglish text and edited by people */
+export interface TenancyTerms {
+  monthlyRent?: number; // taka
+  advanceMonths?: number; // months of rent paid in advance
+  securityDeposit?: number; // taka; the 1991 Act does not allow one
+  increasePercent?: number; // planned rent increase
+  increaseEveryMonths?: number; // how often the increase happens
+  noticeMonths?: number; // notice period either side must give
+}
+
+export type RuleSeverity = "outside" | "conflict" | "info" | "ok";
+
+export interface RuleFlag {
+  id: string;
+  source: string; // e.g. "Premises Rent Control Act 1991, s.10" or "DNCC guideline, Jan 2026"
+  severity: RuleSeverity;
+  en: string;
+  bn: string;
+}
+
+export interface Agreement {
+  id: string;
+  landlordId: string;
+  tenantId: string;
+  propertyId: string;
+  cityCorp: CityCorp;
+  ward?: number;
+  termsText: string; // the original message, kept as evidence
+  terms: TenancyTerms;
+  extractedBy: "ai" | "offline";
+  flags: RuleFlag[];
+  confirmed: Confirmation;
+  status: "draft" | "confirmed" | "declined";
+  hash?: string; // sha256 of the confirmed terms
+  rentalId?: string;
+  startDate: string;
+  createdAt: number;
+  updatedAt: number;
+}
+
+export interface ShareLink {
+  id: string; // random token used in the URL
+  tenantId: string;
+  createdAt: number;
+  expiresAt: number;
+}
+
+export interface Consent {
+  id: string;
+  tenantId: string;
+  lenderId: string;
+  createdAt: number;
+  expiresAt: number;
+  revokedAt?: number;
+}
+
+/** What a lender sees: facts with evidence, never a score */
+export interface RentRecord {
+  tenantId: string;
+  tenantName: string;
+  tenancies: number;
+  tenureMonths: number;
+  monthsMatched: number;
+  monthsOneSided: number;
+  monthsDisputed: number;
+  latestMonth?: string;
+  meetsMinimum: boolean; // six or more matched months
+  consentExpiresAt: number;
+}

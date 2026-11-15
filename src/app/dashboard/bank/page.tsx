@@ -1,10 +1,7 @@
 /**
- * Bank Dashboard Page
- * 
- * Main dashboard for banks showing:
- * - Tenant rental history
- * - Payment behavior analysis
- * - Credit score suggestions
+ * Lender view: Rent Records shared with consent.
+ * Replaces T-ODRE's 0-1000 score over all tenants. Ekmot shows facts with their
+ * evidence level; the lender applies its own credit policy.
  */
 
 "use client";
@@ -12,142 +9,60 @@
 import { useEffect, useState } from "react";
 import DashboardLayout from "@/components/DashboardLayout";
 import Card from "@/components/Card";
-import Table from "@/components/Table";
-import { BankDashboardData } from "@/types";
+import type { RentRecord } from "@/types";
 
 export default function BankDashboard() {
-  const [data, setData] = useState<BankDashboardData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [records, setRecords] = useState<RentRecord[] | null>(null);
 
   useEffect(() => {
-    fetchBankData();
+    fetch("/api/dashboard/bank", { headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` } })
+      .then((r) => r.json())
+      .then((d) => setRecords(d.success ? d.data.records : []))
+      .catch(() => setRecords([]));
   }, []);
-
-  const fetchBankData = async () => {
-    try {
-      const response = await fetch("/api/dashboard/bank", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-        },
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        setData(result.data);
-      }
-    } catch (error) {
-      console.error("Error fetching bank data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const getCreditScoreColor = (score: number) => {
-    if (score >= 750) return "text-green-600";
-    if (score >= 650) return "text-blue-600";
-    if (score >= 550) return "text-yellow-600";
-    return "text-red-600";
-  };
-
-  if (loading) {
-    return (
-      <DashboardLayout role="bank">
-        <div className="text-center">Loading...</div>
-      </DashboardLayout>
-    );
-  }
-
-  if (!data) {
-    return (
-      <DashboardLayout role="bank">
-        <div className="text-center text-red-600">Error loading dashboard data</div>
-      </DashboardLayout>
-    );
-  }
 
   return (
     <DashboardLayout role="bank">
       <div className="space-y-6">
-        <h1 className="text-3xl font-bold text-gray-800">Bank Dashboard</h1>
+        <div>
+          <h1 className="text-3xl font-bold text-gray-800">Rent Records shared with you</h1>
+          <p className="text-gray-600 mt-1">
+            Only tenants who chose to share appear here, for 30 days at most. Ekmot gives facts and how strong the evidence is; your bank applies its own credit policy.
+          </p>
+        </div>
 
-        <Card title="Tenant Rental History & Credit Assessment">
-          {data.tenantHistory.length > 0 ? (
-            <div className="space-y-6">
-              {data.tenantHistory.map((item) => (
-                <div
-                  key={item.tenant.id}
-                  className="border border-gray-200 rounded-lg p-4"
-                >
-                  <div className="flex justify-between items-start mb-4">
-                    <div>
-                      <h3 className="text-lg font-semibold">{item.tenant.name}</h3>
-                      <p className="text-sm text-gray-600">{item.tenant.email}</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-sm text-gray-500">Credit Score</p>
-                      <p
-                        className={`text-2xl font-bold ${getCreditScoreColor(
-                          item.creditScore
-                        )}`}
-                      >
-                        {item.creditScore}
-                      </p>
-                      <p className="text-xs text-gray-500">out of 1000</p>
-                    </div>
+        {records === null ? (
+          <p>Loading...</p>
+        ) : records.length === 0 ? (
+          <Card><p className="text-gray-500">No tenant has shared a Rent Record with you yet.</p></Card>
+        ) : (
+          records.map((r) => (
+            <Card key={r.tenantId} title={r.tenantName}>
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                {[
+                  ["Months matched by both SMS", r.monthsMatched],
+                  ["Months one side only", r.monthsOneSided],
+                  ["Months disputed", r.monthsDisputed],
+                  ["Months as a tenant", r.tenureMonths],
+                  ["Tenancies", r.tenancies],
+                ].map(([label, value]) => (
+                  <div key={String(label)}>
+                    <p className="text-2xl font-bold text-gray-900">{value}</p>
+                    <p className="text-xs text-gray-600">{label}</p>
                   </div>
-
-                  <div className="grid grid-cols-3 gap-4 mb-4">
-                    <div>
-                      <p className="text-sm text-gray-500">On-Time Payment Rate</p>
-                      <p className="text-lg font-semibold">
-                        {item.onTimePaymentRate}%
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500">Total Rentals</p>
-                      <p className="text-lg font-semibold">
-                        {item.rentalHistory.length}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500">Total Payments</p>
-                      <p className="text-lg font-semibold">
-                        {item.paymentHistory.length}
-                      </p>
-                    </div>
-                  </div>
-
-                  {item.paymentHistory.length > 0 && (
-                    <div className="mt-4">
-                      <p className="text-sm font-semibold mb-2">Recent Payments</p>
-                      <Table
-                        headers={["Month", "Amount", "Status"]}
-                        rows={item.paymentHistory.slice(0, 5).map((payment) => [
-                          payment.month,
-                          `৳${payment.amount.toLocaleString()}`,
-                          <span
-                            key={payment.id}
-                            className={`px-2 py-1 rounded text-xs font-semibold ${
-                              payment.status === "paid"
-                                ? "bg-green-100 text-green-800"
-                                : "bg-red-100 text-red-800"
-                            }`}
-                          >
-                            {payment.status.toUpperCase()}
-                          </span>,
-                        ])}
-                      />
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-gray-500">No tenant data available</p>
-          )}
-        </Card>
+                ))}
+              </div>
+              <div className="mt-4 flex flex-wrap gap-3 items-center text-sm">
+                <span className={`px-2 py-1 rounded text-xs font-semibold ${r.meetsMinimum ? "bg-green-100 text-green-800" : "bg-amber-100 text-amber-800"}`}>
+                  {r.meetsMinimum ? "Has 6+ matched months" : "Fewer than 6 matched months"}
+                </span>
+                <span className="text-gray-500">Latest month: {r.latestMonth ?? "—"}</span>
+                <span className="text-gray-500">Shared until {new Date(r.consentExpiresAt).toLocaleDateString("en-GB")}</span>
+              </div>
+            </Card>
+          ))
+        )}
       </div>
     </DashboardLayout>
   );
 }
-
