@@ -1,176 +1,40 @@
-# T-ODRE - LandLoard
+# Ekmot (একমত)
 
-**Transparency-Oriented Digital Rental Ecosystem**
+Ekmot turns a rent deal in Dhaka into a record that **both tenant and landlord confirm**. That confirmed record gives a lender consented rent history (no score) and the government ward-level totals only.
 
-A full-stack digital rental management system built with Next.js 14, TypeScript, and Tailwind CSS.
+Team: Team_Excuse me. AI Builders Congress 2026 (CloudCamp Bangladesh).
 
-## 🚀 Features
+> Status: preliminary build. It runs on JSON files and email OTP, so it is **not for public deployment**. Demo data is synthetic, and the lender and ministry views are previews.
 
-- **Multi-Role Dashboards**: Separate dashboards for Tenants, Landlords, Banks, and Ministry
-- **Mock Authentication**: Email + OTP verification system
-- **JSON Database**: File-based data storage (easily replaceable with SQL)
-- **Transparent Records**: Complete rental and payment history tracking
-- **Credit Assessment**: Bank dashboard with tenant credit scoring
-- **System Analytics**: Ministry dashboard for compliance monitoring
+## Built on T-ODRE
 
-## 📋 Prerequisites
+Ekmot is built on the T-ODRE prototype: Hossain, Rahim and Mahmud (BRAC University), *Transparency-Oriented Digital Rental Ecosystem (T-ODRE Model) for Economical Equity and Sustainability*, 8th IEOM Bangladesh Conference, 2025, DOI 10.46254/BA08.20250235. Original code: https://github.com/KaziAbdurRahim/Landlord (MIT).
 
-- Node.js 18+ 
-- npm or yarn
+## Run it
 
-## 🛠️ Installation
-
-1. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-
-2. **Set up environment variables:**
-   Create a `.env.local` file in the root directory:
-   ```
-   APP_NAME="T-ODRE"
-   MOCK_SECRET="anystringhere"
-   ```
-
-3. **Run the development server:**
-   ```bash
-   npm run dev
-   ```
-
-4. **Open your browser:**
-   Navigate to [http://localhost:3000](http://localhost:3000)
-
-## 📁 Project Structure
-
-```
-/src
-  /app
-    /auth          # Authentication pages (login, register)
-    /dashboard     # Dashboard pages for each role
-    /api           # API routes
-  /components      # Reusable UI components
-  /data            # JSON database files
-  /lib             # Client-side utilities
-  /types           # TypeScript type definitions
-  /utils           # Server-side utilities
-```
-
-## 👥 User Roles
-
-### Tenant
-- View rented property information
-- Check payment history
-- Download receipts
-- View landlord contact details
-
-### Landlord
-- Manage properties
-- Approve/decline rental requests
-- Track tenant payments
-- View rent due list
-
-### Bank
-- Access tenant rental history
-- View payment behavior
-- Credit score assessment
-
-### Ministry
-- System-wide analytics
-- Compliance tracking
-- Rent map by area
-- Policy monitoring
-
-## 🔐 Authentication Flow
-
-1. **Registration/Login**: Enter email and role
-2. **OTP Verification**: Receive OTP code (stored in `mock_emails.json`)
-3. **Dashboard Access**: Redirected to role-specific dashboard
-
-**Note**: In development mode, OTP codes are logged to the console for testing.
-
-## 📊 JSON Database
-
-The system uses JSON files as a mock database:
-
-- `users.json` - User accounts
-- `properties.json` - Rental properties
-- `rentals.json` - Rental agreements
-- `payments.json` - Payment records
-- `mock_emails.json` - OTP codes (mock email system)
-
-## 🧪 Testing
-
-### Pre-configured Test Users
-
-The system comes with sample data:
-
-- **Tenant**: rahim@gmail.com
-- **Landlord**: karim@gmail.com
-- **Bank**: bank@example.com
-- **Ministry**: ministry@example.com
-
-**Note**: You'll need to request OTP for these accounts to log in.
-
-## 🔄 API Endpoints
-
-### Authentication
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/send-otp` - Send OTP to email
-- `POST /api/auth/verify` - Verify OTP and login
-- `GET /api/auth/me` - Get current user
-
-### Dashboards
-- `GET /api/dashboard/tenant` - Tenant dashboard data
-- `GET /api/dashboard/landlord` - Landlord dashboard data
-- `GET /api/dashboard/bank` - Bank dashboard data
-- `GET /api/dashboard/ministry` - Ministry dashboard data
-
-## 🎨 UI Components
-
-Reusable components available in `/src/components`:
-
-- `Button` - Styled button with variants
-- `Card` - Content container
-- `Table` - Data table
-- `Input` - Form input field
-- `OTPInput` - OTP code input
-- `Navbar` - Top navigation
-- `Sidebar` - Side navigation
-
-## 🔧 Development
-
-### Build for production:
 ```bash
-npm run build
+npm install
+npm run dev
 ```
 
-### Start production server:
-```bash
-npm start
-```
+Open http://localhost:3000. The 6-digit login code is printed in the terminal (`[Send OTP]`).
 
-## 📝 Notes
+| Role | Email |
+| --- | --- |
+| Tenant | rahim@test.ekmot |
+| Landlord | karim@test.ekmot |
+| Tenant with synthetic history | mahmud.hossain@test.ekmot |
+| Lender | bank@example.com |
+| Ministry | ministry@example.com |
 
-- This is a **mock system** for demonstration purposes
-- Authentication uses localStorage (not secure for production)
-- JSON database is suitable for development/testing only
-- Replace with proper database (PostgreSQL, MongoDB, etc.) for production
-- Use proper JWT libraries and secure session management in production
+Optional `.env.local` (never commit it): `AUTH_SECRET`, `GEMINI_API_KEY` or `OPENAI_API_KEY`, `AI_MODEL`. Without an AI key, the offline reader is used.
 
-## 🚧 Future Enhancements
+## More
 
-- Real email service integration
-- SQL database migration
-- PDF receipt generation
-- Real-time notifications
-- Mobile app support
-- Advanced analytics
+- [EKMOT_README.md](EKMOT_README.md): what changed, features, 3-minute demo script
+- [docs/EKMOT_SPEC.md](docs/EKMOT_SPEC.md): full spec and feature status
+- [CLAUDE.md](CLAUDE.md): rules for working on the code
 
-## 📄 License
+## Licence
 
-This project is for educational/demonstration purposes.
-
----
-
-**Built with ❤️ using Next.js 14**
-
+MIT. See [LICENSE](LICENSE).
